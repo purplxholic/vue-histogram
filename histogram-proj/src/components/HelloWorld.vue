@@ -1,28 +1,41 @@
 <template>
 
 
-  <svg :width="width" :height="height">
-    <!-- <g v-for="bin in bins"> -->
-      <rect class ="bar" v-for="bin in bins"
+  <svg :width="width" :height="height" >
+
+    <g v-for="bin in bins">
+      <rect
         :x="1"
         :transform="'translate(' + x(bin.x0) + ',' + y(bin.length) + ')'"
         :width="x(bin.x1) - x(bin.x0)-1 "
         :height="height - y(bin.length)">
       </rect>
-      <!-- <text
-        :dy="0.75em"
+
+      <text
+
+        dy="0.75em"
+        text-anchor="middle"
         :y="6"
-        :x="(x(bins[0].x1) - x(bins[0].x0)) / 2"
-        :text-anchor="middle">
-      </text> -->
+        :x="(x(bin.x1) - x(bin.x0)) / 2"
+        :text="bin.length"
+        >
+      </text>
 
     </g>
-
+    <g
+      :transform="'translate(0,'+height+')'"
+      :call="xaxis"
+    >
+    </g>
+    <g
+      :call="yaxis"
+      >
+    </g>
   </svg>
 
 </template>
-
-
+<!-- :dy=".75em" -->
+<!-- :text-anchor="middle" -->
 <script>
 import * as d3 from 'd3'
 export default {
@@ -31,7 +44,7 @@ export default {
     return {
       // msg: 'Welcome to Your Vue.js App',
       random_data: d3.range(1000).map(d3.randomBates(10)),
-      width: 500,
+      width: 960,
       height: 500
     }
   },
@@ -49,6 +62,19 @@ export default {
       let height = this.height
       let bins = this.bins
       return d3.scaleLinear().domain([0, d3.max(bins, function (d) { return d.length })]).range([height, 0])
+    },
+    labels () {
+      let bins = this.bins
+      let formatCount = d3.format(',.0f')
+      return formatCount(bins.length)
+    },
+    yaxis () {
+      let y = this.y
+      return d3.axisLeft(y)
+    },
+    xaxis () {
+      let x = this.x
+      return d3.axisBottom(x)
     }
   }
 }
