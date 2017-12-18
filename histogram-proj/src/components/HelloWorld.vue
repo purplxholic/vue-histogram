@@ -2,35 +2,31 @@
 
 
   <svg :width="width" :height="height" >
+          <g v-for="bin in bins" :transform="'translate('+margin.left+','+margin.top+')'">
+            <rect
+              :x="1"
+              :transform="'translate(' + x(bin.x0) + ',' + y(bin.length) + ')'"
+              :width="x(bin.x1) - x(bin.x0)-1 "
+              :height="height - y(bin.length)">
+            </rect>
+            <!-- <text
 
-    <g v-for="bin in bins">
-      <rect
-        :x="1"
-        :transform="'translate(' + x(bin.x0) + ',' + y(bin.length) + ')'"
-        :width="x(bin.x1) - x(bin.x0)-1 "
-        :height="height - y(bin.length)">
-      </rect>
+              dy="0.75em"
+              text-anchor="middle"
+              :y="6"
+              :x="(x(bin.x1) - x(bin.x0)) / 2"
+              :text="formatCount(bin.length)"
+              >
+            </text> -->
 
-      <text
+          </g>
+          <g
+            :transform="'translate(0,'+height+')'"
+            :call="xaxis(x)"
+            >
 
-        dy="0.75em"
-        text-anchor="middle"
-        :y="6"
-        :x="(x(bin.x1) - x(bin.x0)) / 2"
-        :text="bin.length"
-        >
-      </text>
 
-    </g>
-    <g
-      :transform="'translate(0,'+height+')'"
-      :call="xaxis"
-    >
-    </g>
-    <g
-      :call="yaxis"
-      >
-    </g>
+          </g>
   </svg>
 
 </template>
@@ -45,7 +41,14 @@ export default {
       // msg: 'Welcome to Your Vue.js App',
       random_data: d3.range(1000).map(d3.randomBates(10)),
       width: 960,
-      height: 500
+      height: 500,
+      margin: {top: 10, right: 30, bottom: 30, left: 30}
+    }
+  },
+  methods: {
+    xaxis: function (event) {
+      let x = this.x
+      return d3.axisBottom(x)
     }
   },
   computed: {
@@ -72,9 +75,8 @@ export default {
       let y = this.y
       return d3.axisLeft(y)
     },
-    xaxis () {
-      let x = this.x
-      return d3.axisBottom(x)
+    formatCount () {
+      return d3.format(',.0f')
     }
   }
 }
