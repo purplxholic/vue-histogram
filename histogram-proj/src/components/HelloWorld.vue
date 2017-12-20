@@ -6,18 +6,17 @@
             <rect
               :x="1"
               :transform="'translate(' + x(bin.x0) + ',' + y(bin.length) + ')'"
-              :width="x(bin.x1) - x(bin.x0)-1 "
+              :width="x(bin.x1) - x(bin.x0)-1"
               :height="height - y(bin.length)">
             </rect>
-            <!-- <text
-
-              dy="0.75em"
+            <text
+              dy='0.75em'
               text-anchor="middle"
-              :y="6"
+              :y='6'
               :x="(x(bin.x1) - x(bin.x0)) / 2"
-              :text="formatCount(bin.length)"
-              >
-            </text> -->
+              :transform="'translate(' + x(bin.x0) + ',' + y(bin.length) + ')'">
+              {{ formatCount(bin.length) }}
+            </text>
 
           </g>
           <g
@@ -66,11 +65,6 @@ export default {
       let bins = this.bins
       return d3.scaleLinear().domain([0, d3.max(bins, function (d) { return d.length })]).range([height, 0])
     },
-    labels () {
-      let bins = this.bins
-      let formatCount = d3.format(',.0f')
-      return formatCount(bins.length)
-    },
     yaxis () {
       let y = this.y
       return d3.axisLeft(y)
@@ -103,7 +97,7 @@ rect {
 }
 
 text {
-  fill: #fff;
+  fill: #000;
   font: 10px sans-serif;
 }
 </style>
