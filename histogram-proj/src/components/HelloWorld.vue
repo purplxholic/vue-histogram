@@ -21,10 +21,10 @@
           </g>
           <g
             :transform="'translate(0,'+height+')'"
-            :call="xaxis(x)"
+            v-for="i in x"
             >
-
-
+            <text fill="#000" y="9" dy="0.71em">{{ x0 }}</text>
+            <line stroke="#000" y2="6"></line>
           </g>
   </svg>
 
@@ -42,12 +42,6 @@ export default {
       width: 960,
       height: 500,
       margin: {top: 10, right: 30, bottom: 30, left: 30}
-    }
-  },
-  methods: {
-    xaxis: function (event) {
-      let x = this.x
-      return d3.axisBottom(x)
     }
   },
   computed: {
@@ -71,6 +65,11 @@ export default {
     },
     formatCount () {
       return d3.format(',.0f')
+    },
+    xaxis () {
+      let x = this.x
+      console.log(d3.axisBottom(x))
+      return d3.axisBottom(x)
     }
   }
 }
@@ -97,7 +96,7 @@ rect {
 }
 
 text {
-  fill: #000;
+  fill: #fff;
   font: 10px sans-serif;
 }
 </style>
