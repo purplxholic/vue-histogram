@@ -19,20 +19,24 @@
             </text>
 
           </g>
-          <g
-            :transform="'translate(0,'+height+')'"
-            v-for="i in x"
-            >
-            <text fill="#000" y="9" dy="0.71em">{{ x0 }}</text>
-            <line stroke="#000" y2="6"></line>
-          </g>
+          <!-- <g>
+            <path class="domain" stroke="#000" d="M0.5,6V0.5H880.5V6"></path>
+            <g class="tick" opacity="1" transform="'translate(0.5,0)'">
+              <line stroke="#000" y2="6"></line>
+              <text fill="#000" y="9" dy="0.71em">0.0</text>
+            </g>
+          </g> -->
+          <g :transform="chartTransform">
+          <g><chart-axis orient="Left" :scale=y /></g>
+          <g :transform="'translate(0,' + contentHeight +')'"><chart-axis orient="Bottom" :scale=x /></g>
+        </g>
   </svg>
 
 </template>
-<!-- :dy=".75em" -->
-<!-- :text-anchor="middle" -->
+
 <script>
 import * as d3 from 'd3'
+import ChartAxis from './ChartAxis.vue'
 export default {
   name: 'HelloWorld',
   data () {
@@ -70,7 +74,19 @@ export default {
       let x = this.x
       console.log(d3.axisBottom(x))
       return d3.axisBottom(x)
+    },
+    contentHeight () {
+      let height = this.height
+      let margin = this.margin
+      return height - margin.top - margin.bottom
+    },
+    chartTransform () {
+      let margin = this.margin
+      return 'translate('+margin.left+','+margin.top+')'
     }
+  },
+  components: {
+    'chart-axis': ChartAxis
   }
 }
 </script>
@@ -98,5 +114,9 @@ rect {
 text {
   fill: #fff;
   font: 10px sans-serif;
+}
+
+.chart-axis.text{
+  fill: #000;
 }
 </style>
