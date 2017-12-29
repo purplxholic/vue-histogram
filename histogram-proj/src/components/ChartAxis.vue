@@ -1,6 +1,7 @@
 <template>
   <g>
   <g ref="axis"></g>
+  <text class="axis-title" :transform="_titleTransform">{{title}}</text>
   </g>
 </template>
 
@@ -16,6 +17,10 @@ export default {
     'scale': { // D3 scale function, like d3.scaleLinear
       type: Function,
       required: true
+    },
+    'title': {
+      type: String,
+      required: false
     }
   },
   methods: {
@@ -28,6 +33,26 @@ export default {
   mounted: function () {
     // Draw the axis for the first time
     this._draw()
+  },
+  computed: {
+    _titleTransform () {
+      const [min, max] = this.scale.range()
+      const mid = (max - min) / 2
+      switch (this.orient) {
+        case 'Bottom':
+          return `translate(${mid}, 35)`
+        case 'Left':
+          return `translate(-40, ${-mid}) rotate(-90)`
+        default:
+          return `translate(0, 0)`
+      }
+    }
   }
 }
 </script>
+<style>
+.axis-title {
+    text-anchor: middle;
+    font-size: small;
+}
+</style>
