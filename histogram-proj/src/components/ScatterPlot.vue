@@ -16,7 +16,7 @@ export default {
       margin: {top: 20, right: 20, bottom: 30, left: 40},
       axisnamey: 'y-axis',
       axisnamex: 'x-axis',
-      data: d3.csv('./assets/cereal.csv', function (error, data) {
+      data: d3.csv('./assets/cereal.csv', function (data) {
         data.forEach(function (d) {
           d.Calories = +d.Calories
           d['Protein (g)'] = +d['Protein (g)']
@@ -33,7 +33,7 @@ export default {
     },
     xScale () { // value -> display
       let width = this.width
-      return d3.scale.linear().range([0, width])
+      return d3.scaleLinear().range([0, width])
     },
     xMap () { // data -> display
       let xValue = this.xValue
@@ -48,7 +48,7 @@ export default {
     },
     yScale () { // value -> display
       let height = this.height
-      return d3.scale.linear().range([height, 0])
+      return d3.scaleLinear().range([height, 0])
     },
     yMap () { // data -> display
       let d = this.data

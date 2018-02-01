@@ -1,13 +1,13 @@
 <template>
 
 
-  <svg :width="width" :height="height" >
+  <svg :width="truew" :height="trueh" >
           <g v-for="bin in bins" :transform="'translate('+margin.left+','+margin.top+')'">
             <rect
               :x="1"
-              :transform="'translate(' + x(bin.x0) + ',' + y(bin.length) + ')'"
+              :transform="'translate(' + x(bin.x0) + ',' + y(bin.length) +')'"
               :width="x(bin.x1) - x(bin.x0)-1"
-              :height="height - y(bin.length)">
+              :height="height - y(bin.length) ">
             </rect>
             <text
               dy='0.75em'
@@ -19,10 +19,10 @@
             </text>
 
           </g>
-
+          <g class="chart-axis" :transform="'translate(50,20)'"><chart-axis orient="Left" :scale=y :title=axisnamey /></g>
           <g :transform="chartTransform">
-          <g class="chart-axis"><chart-axis orient="Left" :scale=y :title=axisnamey /></g>
-          <g :transform="'translate(0,' + contentHeight +')'"><chart-axis orient="Bottom" :scale=x :title=axisnamex /></g>
+
+          <g :transform="'translate(0,' + 500 +')'"><chart-axis orient="Bottom" :scale=x :title=axisnamex /></g>
         </g>
   </svg>
 
@@ -37,9 +37,12 @@ export default {
     return {
       // msg: 'Welcome to Your Vue.js App',
       random_data: d3.range(1000).map(d3.randomBates(10)),
+      neg: -10,
       width: 960,
       height: 500,
-      margin: {top: 10, right: 30, bottom: 30, left: 30},
+      truew: 1000,
+      trueh: 540,
+      margin: {top: 20, right: 30, bottom: 30, left: 50},
       axisnamey: 'y-axis',
       axisnamex: 'x-axis'
     }
@@ -68,7 +71,6 @@ export default {
     },
     xaxis () {
       let x = this.x
-      console.log(d3.axisBottom(x))
       return d3.axisBottom(x)
     },
     contentHeight () {
@@ -78,7 +80,9 @@ export default {
     },
     chartTransform () {
       let margin = this.margin
-      return 'translate(' + margin.left + ',' + margin.top + ')'
+      let new_top_margin = margin.top
+
+      return 'translate(' + margin.left  + ',' + new_top_margin+ ')'
     }
   },
   components: {
