@@ -7,7 +7,7 @@
               :x="1"
               :transform="'translate(' + x(bin.x0) + ',' + y(bin.length) +')'"
               :width="x(bin.x1) - x(bin.x0)-1"
-              :height="height - y(bin.length) ">
+              :height="height - y(bin.length)- 30 ">
             </rect>
             <text
               dy='0.75em'
@@ -22,7 +22,7 @@
           <g class="chart-axis" :transform="'translate(50,20)'"><chart-axis orient="Left" :scale=y :title=axisnamey /></g>
           <g :transform="chartTransform">
 
-          <g :transform="'translate(0,' + 500 +')'"><chart-axis orient="Bottom" :scale=x :title=axisnamex /></g>
+          <g :transform="'translate(0,' + 470 +')'"><chart-axis orient="Bottom" :scale=x :title=axisnamex /></g>
         </g>
   </svg>
 
@@ -35,9 +35,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      // msg: 'Welcome to Your Vue.js App',
       random_data: d3.range(1000).map(d3.randomBates(10)),
-      neg: -10,
       width: 960,
       height: 500,
       truew: 1000,
@@ -60,7 +58,7 @@ export default {
     y () {
       let height = this.height
       let bins = this.bins
-      return d3.scaleLinear().domain([0, d3.max(bins, function (d) { return d.length })]).range([height, 0])
+      return d3.scaleLinear().domain([0, d3.max(bins, function (d) { return d.length })]).range([height - 30, 0])
     },
     yaxis () {
       let y = this.y
@@ -80,9 +78,7 @@ export default {
     },
     chartTransform () {
       let margin = this.margin
-      let new_top_margin = margin.top
-
-      return 'translate(' + margin.left  + ',' + new_top_margin+ ')'
+      return 'translate(' + margin.left + ',' + margin.top + ')'
     }
   },
   components: {
